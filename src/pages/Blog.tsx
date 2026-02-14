@@ -2,7 +2,6 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import FadeInSection from "@/components/FadeInSection";
 
-const HASHNODE_BLOG = "https://luminara-reach.hashnode.dev";
 
 const posts = [
   {
@@ -11,6 +10,7 @@ const posts = [
     excerpt: "You've launched your website—but traffic isn't coming. Discover the hidden reasons businesses struggle with visibility and what you can do about it.",
     date: "2026-02-14",
     category: "SEO",
+    url: "https://luminara-reach.hashnode.dev/your-website-is-live-so-why-is-no-one-visiting-the-hidden-traffic-problem-facing-businesses"
   },
   {
     slug: "social-media-engagement",
