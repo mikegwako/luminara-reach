@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Linkedin, Mail, Phone } from "lucide-react";
-import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -10,7 +9,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <img src={logo} alt="Luminara Reach" className="h-10 w-auto" />
+              <span className="text-xl font-bold text-primary">Luminara</span>
+              <span className="text-xl font-light text-foreground">Reach</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Turning visibility into meaningful connections and measurable growth.

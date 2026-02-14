@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
-import logo from "@/assets/logo.png";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "./ui/sheet";
@@ -22,7 +21,8 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Luminara Reach" className="h-10 w-auto" />
+          <span className="text-xl font-bold text-primary">Luminara</span>
+          <span className="text-xl font-light text-foreground">Reach</span>
         </Link>
 
         {/* Desktop Nav */}
