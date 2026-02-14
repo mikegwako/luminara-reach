@@ -1,40 +1,64 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+type ThemeMode = "system" | "light" | "dark";
+type ResolvedTheme = "light" | "dark";
 
 interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
+  mode: ThemeMode;
+  resolvedTheme: ResolvedTheme;
+  cycleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "light",
-  toggleTheme: () => {},
+  mode: "system",
+  resolvedTheme: "light",
+  cycleTheme: () => {},
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
+const getSystemTheme = (): ResolvedTheme =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [mode, setMode] = useState<ThemeMode>(() => {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("luminara-theme") as Theme;
-      if (stored) return stored;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      return (localStorage.getItem("luminara-theme-mode") as ThemeMode) || "system";
     }
-    return "light";
+    return "system";
   });
 
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    localStorage.setItem("luminara-theme", theme);
-  }, [theme]);
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() =>
+    typeof window !== "undefined"
+      ? mode === "system" ? getSystemTheme() : mode
+      : "light"
+  );
 
-  const toggleTheme = () => setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  useEffect(() => {
+    const resolve = () => {
+      const resolved = mode === "system" ? getSystemTheme() : mode;
+      setResolvedTheme(resolved);
+      const root = document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(resolved);
+    };
+
+    resolve();
+    localStorage.setItem("luminara-theme-mode", mode);
+
+    if (mode === "system") {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = () => resolve();
+      mq.addEventListener("change", handler);
+      return () => mq.removeEventListener("change", handler);
+    }
+  }, [mode]);
+
+  const cycleTheme = () =>
+    setMode((prev) => (prev === "system" ? "light" : prev === "light" ? "dark" : "system"));
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ mode, resolvedTheme, cycleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
