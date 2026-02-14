@@ -2,6 +2,7 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import FadeInSection from "@/components/FadeInSection";
 
+const HASHNODE_BLOG = "https://luminara-reach.hashnode.dev";
 
 const posts = [
   {
