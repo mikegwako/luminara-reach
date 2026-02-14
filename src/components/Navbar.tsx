@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Monitor } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/button";
@@ -14,7 +14,9 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { mode, cycleTheme } = useTheme();
+
+  const ThemeIcon = mode === "system" ? Monitor : mode === "light" ? Moon : Sun;
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -44,11 +46,11 @@ const Navbar = () => {
 
         <div className="hidden items-center gap-3 md:flex">
           <button
-            onClick={toggleTheme}
+            onClick={cycleTheme}
             className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            aria-label="Toggle theme"
+            aria-label={`Theme: ${mode}`}
           >
-            {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            <ThemeIcon className="h-4 w-4" />
           </button>
           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
             <Link to="/contact">Reach Out</Link>
@@ -58,11 +60,11 @@ const Navbar = () => {
         {/* Mobile Nav */}
         <div className="flex items-center gap-2 md:hidden">
           <button
-            onClick={toggleTheme}
+            onClick={cycleTheme}
             className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted"
-            aria-label="Toggle theme"
+            aria-label={`Theme: ${mode}`}
           >
-            {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            <ThemeIcon className="h-4 w-4" />
           </button>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
